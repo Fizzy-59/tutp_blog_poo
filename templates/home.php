@@ -1,45 +1,41 @@
-<?php $this->title = 'Accueil'; ?>
+<?php $this->title = 'Administration'; ?>
 
-    <h1>Mon blog</h1>
-    <p>En construction</p>
+<h1>Mon blog</h1>
+<p>En construction</p>
 <?= $this->session->show('add_article'); ?>
 <?= $this->session->show('edit_article'); ?>
 <?= $this->session->show('delete_article'); ?>
-<?= $this->session->show('add_comment'); ?>
-<?= $this->session->show('flag_comment'); ?>
-<?= $this->session->show('delete_comment'); ?>
-<?= $this->session->show('register'); ?>
-<?= $this->session->show('login'); ?>
-<?= $this->session->show('logout'); ?>
-<?= $this->session->show('delete_account'); ?>
-<?php
-if ($this->session->get('pseudo')) {
-    ?>
-    <a href="../public/index.php?route=logout">Déconnexion</a>
-    <a href="../public/index.php?route=profile">Profil</a>
-    <?php if($this->session->get('role') === 'admin') { ?>
-        <a href="../public/index.php?route=administration">Administration</a>
-    <?php } ?>
-    <a href="../public/index.php?route=addArticle">Nouvel article</a>
+<h2>Articles</h2>
+<a href="../public/index.php?route=addArticle">Nouvel article</a>
+<table>
+    <tr>
+        <td>Id</td>
+        <td>Titre</td>
+        <td>Contenu</td>
+        <td>Auteur</td>
+        <td>Date</td>
+        <td>Actions</td>
+    </tr>
     <?php
-} else {
+    foreach ($articles as $article)
+    {
+        ?>
+        <tr>
+            <td><?= htmlspecialchars($article->getId());?></td>
+            <td><a href="../public/index.php?route=article&articleId=<?= htmlspecialchars($article->getId());?>"><?= htmlspecialchars($article->getTitle());?></a></td>
+            <td><?= substr(htmlspecialchars($article->getContent()), 0, 150);?></td>
+            <td><?= htmlspecialchars($article->getAuthor());?></td>
+            <td>Créé le : <?= htmlspecialchars($article->getCreatedAt());?></td>
+            <td>
+                <a href="../public/index.php?route=editArticle&articleId=<?= $article->getId(); ?>">Modifier</a>
+                <a href="../public/index.php?route=deleteArticle&articleId=<?= $article->getId(); ?>">Supprimer</a>
+            </td>
+        </tr>
+        <?php
+    }
     ?>
-    <a href="../public/index.php?route=register">Inscription</a>
-    <a href="../public/index.php?route=login">Connexion</a>
-    <?php
-}
-?>
-<?php
-foreach ($articles as $article)
-{
-    ?>
-    <div>
-        <h2><a href="../public/index.php?route=article&articleId=<?= htmlspecialchars($article->getId());?>"><?= htmlspecialchars($article->getTitle());?></a></h2>
-        <p><?= htmlspecialchars($article->getContent());?></p>
-        <p><?= htmlspecialchars($article->getAuthor());?></p>
-        <p>Créé le : <?= htmlspecialchars($article->getCreatedAt());?></p>
-    </div>
-    <br>
-    <?php
-}
-?>
+</table>
+
+<h2>Commentaires signalés</h2>
+
+<h2>Utilisateurs</h2>
